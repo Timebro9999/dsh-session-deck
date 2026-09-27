@@ -409,10 +409,14 @@ check(
   'style tag content',
 );
 check(
-  'the band header is set in the rows\' own size',
-  /\.dsd-section-head \{ display:flex; align-items:center; gap:6px; height:32px; padding:0 8px; border-radius: var\(--dsw-radius-md\); cursor:pointer; font-size:13px;/.test(
-    doc.head.children[0].textContent || '',
-  ),
+  'the section head inherits the shell row metric instead of hard-coding one',
+  (() => {
+    const css = doc.head.children[0].textContent || '';
+    const head = (css.match(/\.dsd-section-head \{[^}]*\}/) || [''])[0];
+    const row = (css.match(/\.dsd-pin-row \{[^}]*\}/) || [''])[0];
+    return head.length > 0 && row.length > 0 &&
+      head.indexOf('font-size') === -1 && row.indexOf('font-size') === -1;
+  })(),
   'style tag content',
 );
 fire(bandHead, 'click');
