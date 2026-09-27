@@ -35,12 +35,6 @@ Listing in the DSH plugin market comes from the curated index
 [`marketplace/`](marketplace) — and `scripts/open-marketplace-pr.sh` opens the PR.
 The index's CI requires the repository to be at least one day old.
 
-### Install (raw)
-
-```bash
-dsh plugin --profile desktop add github:Timebro9999/dsh-session-deck
-```
-
 Restart the desktop app (or reload the window) once; after that the plugin reloads with the profile.
 
 ## Requirements
