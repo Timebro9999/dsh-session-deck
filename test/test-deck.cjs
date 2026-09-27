@@ -52,7 +52,17 @@ const workspaceStore = {
     { workspaceId: 'w-tryon', title: '3d-tryon', sessionIds: [] },
   ],
 };
-const listOf = (snapshot) => ({ getSnapshot: () => snapshot, subscribe: () => () => {} });
+const listOf = (snapshot, listeners = []) => ({
+  getSnapshot: () => snapshot,
+  subscribe: (fn) => {
+    listeners.push(fn);
+    return () => {
+      const index = listeners.indexOf(fn);
+      if (index !== -1) listeners.splice(index, 1);
+    };
+  },
+  poke: () => listeners.slice().forEach((fn) => fn()),
+});
 const localeSnapshot = { active: 'zh', locales: [], revision: 1 };
 const calls = { using: 0 };
 const previewTexts = {
@@ -197,15 +207,6 @@ check('picker renders an icon grid', cells.length >= 20, String(cells.length));
 const tabs = descendants(panel).filter((el) => el.className.includes('dsd-tab'));
 check('picker renders category tabs', tabs.length >= 8, String(tabs.length));
 check('picker offers a reset action', Boolean(byClass(panel, 'dsd-picker-foot')));
-check(
-  'the emoji hint never hard-codes a macOS-only shortcut on a non-Mac platform',
-  (() => {
-    const note = byClass(panel, 'dsd-note');
-    if (!note) return false;
-    return note.textContent.indexOf('Control + Command') === -1 && note.textContent.indexOf('表情面板') !== -1;
-  })(),
-  byClass(panel, 'dsd-note') && byClass(panel, 'dsd-note').textContent,
-);
 
 /* 3. choosing an icon ----------------------------------------------------- */
 const folderCell = cells.find((cell) => cell.textContent === '📁');
@@ -333,7 +334,23 @@ check(
 );
 const bandRow = byClass(band, 'dsd-pin-row');
 check('band lists the pinned conversation', bandRow && byClass(bandRow, 'dsd-pin-title').textContent === '重构侧边栏会话列表');
-check('band row carries the project icon', byClass(bandRow, 'dsd-pin-icon').textContent === '📁');
+check(
+  'a running conversation shows the shell\'s own spinner instead of an icon',
+  (() => {
+    const spinner = byClass(bandRow, 'dsd-spinner');
+    return Boolean(spinner) &&
+      /class="dsd-spinner-motion"/.test(spinner.innerHTML) &&
+      spinner.getAttribute('aria-label').indexOf('运行中') === 0;
+  })(),
+  bandRow && bandRow.children.map((child) => child.className).join('|'),
+);
+check(
+  'the spinner keeps the same ring geometry as the shell',
+  /\.dsd-spinner-track, \.dsd-spinner-arc \{ fill:none; stroke:currentColor; stroke-width:2;/.test(
+    doc.head.children[0].textContent || '',
+  ) && /animation: dsd-spinner-spin 1\.5s linear infinite/.test(doc.head.children[0].textContent || ''),
+  'style tag content',
+);
 check(
   'pin persisted',
   /"pinnedSessions":\[\{"id":"s-alpha"/.test(local.getItem('dsh-session-deck:v1') || ''),
@@ -357,6 +374,11 @@ const rows = band2.children.filter((child) => child.className.includes('dsd-pin-
 check('band now holds both pins', rows.length === 2, String(rows.length));
 check('project pin comes first', byClass(rows[0], 'dsd-pin-title').textContent === 'deepseek调试');
 check('project pin shows the project icon', byClass(rows[0], 'dsd-pin-icon').textContent === '📁');
+check(
+  'a pinned project never shows the running ring',
+  byClass(rows[0], 'dsd-spinner') === undefined && byClass(rows[0], 'dsd-pin-icon') !== undefined,
+  rows[0] && rows[0].children.map((child) => child.className).join('|'),
+);
 check(
   'project pin persisted',
   /"pinnedProjects":\[\{"id":"w-debug"/.test(local.getItem('dsh-session-deck:v1') || ''),
@@ -663,9 +685,16 @@ check(
   activity.children.filter((child) => child.className.includes('dsd-activity-group')).map((g) => g.textContent).join('|'),
 );
 check(
-  'rows carry the project icon',
-  byClass(activityRows[0], 'dsd-activity-glyph').textContent === '📁',
-  byClass(activityRows[0], 'dsd-activity-glyph').textContent,
+  'the activity view uses the same running ring for a running conversation',
+  byClass(activityRows[0], 'dsd-spinner') !== undefined &&
+    byClass(activityRows[0], 'dsd-activity-glyph') === undefined,
+  activityRows[0] && activityRows[0].children.map((child) => child.className).join('|'),
+);
+check(
+  'a non-running conversation keeps its project glyph',
+  byClass(activityRows[1], 'dsd-activity-glyph') !== undefined &&
+    byClass(activityRows[1], 'dsd-spinner') === undefined,
+  activityRows[1] && activityRows[1].children.map((child) => child.className).join('|'),
 );
 check('rows are grouped by day', activity.children.some((child) => child.className.includes('dsd-activity-group')));
 

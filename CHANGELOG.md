@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0 — live everywhere, and the running ring
+
+- **One state, every view.** The pinned band and the activity view now resolve each row against the live
+  session/workspace stores instead of the snapshot taken when you pinned it: rename a conversation and it
+  renames in every view the moment the shell broadcasts it; the same for a project title, a running turn,
+  and the project icon. The stored snapshot is only the fallback (and is refreshed with what we resolved).
+- **The shell's own running ring.** A conversation that is working shows the same 14px spinner ring the
+  project list shows — same geometry, colour and 1.5s period, `prefers-reduced-motion` respected — in the
+  pinned band (including the conversations unfolded under a pinned project) and in the activity view,
+  instead of the project emoji.
+
 ## 0.1.1 — cross-platform copy
 
 - The emoji-panel hint is now platform-aware: macOS (`Control + Command + Space`), Windows (`Win + .`),
