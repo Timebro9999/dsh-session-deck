@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.1 — the pinned area matches the project area, and the data never goes stale
+
+- **Type metric.** The section heads and pinned rows no longer hard-code a font size: they inherit the
+  shell's own row metric, exactly like the shipped project rows, so 置顶 and 项目 are the same size in
+  every theme.
+- **Self-healing reads.** The session/workspace snapshot is cached for half a second and the store
+  subscriptions are (re)attached on every read, not only at mount. A plugin that mounted before the
+  client services were live used to keep serving an empty snapshot — which is how the activity view could
+  show "nothing yet" next to a sidebar full of conversations, and how a running conversation could miss
+  its ring.
+- **Container takeover.** Section/pinned nodes and the activity panel now carry the same stale marker the
+  bell uses: when a newer instance takes over, the older one stands down instead of re-inserting its copy
+  (a page can hold instances from earlier bundle loads; the shell does not unload them).
+
 ## 0.2.0 — live everywhere, and the running ring
 
 - **One state, every view.** The pinned band and the activity view now resolve each row against the live
