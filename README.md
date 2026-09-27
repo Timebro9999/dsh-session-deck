@@ -74,6 +74,12 @@ dsh plugin --profile desktop add github:Timebro9999/dsh-session-deck
 ```
 
 Restart the desktop app (or reload the window) once; after that the plugin loads with the profile.
+The same spec works in the in-app plugin pages (they accept a GitHub target), and `#v0.1.1` pins a
+release instead of tracking `main`:
+
+```bash
+dsh plugin --profile desktop add github:Timebro9999/dsh-session-deck#v0.1.1
+```
 
 Listing in the DSH plugin market comes from the curated index
 [`awesome-dsh-plugin`](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) (the market reads its

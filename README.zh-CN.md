@@ -69,6 +69,12 @@ dsh plugin --profile desktop add github:Timebro9999/dsh-session-deck
 ```
 
 装完重启桌面端（或刷新窗口）一次，之后随 profile 加载。
+同样的写法也能填进 App 里的插件页面（它接受 GitHub 目标）；加 `#v0.1.1` 可以锁定某个 release，而不是跟着
+`main` 分支走：
+
+```bash
+dsh plugin --profile desktop add github:Timebro9999/dsh-session-deck#v0.1.1
+```
 
 插件市场里的收录来自索引
 [`awesome-dsh-plugin`](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)（市场读它的 `plugins.json`）。
