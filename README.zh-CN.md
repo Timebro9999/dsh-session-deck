@@ -6,6 +6,7 @@
 把项目和对话一起收进一个置顶区、一键把侧边栏切成「最近使用」、给每个项目换自己的图标、
 用不到的分区可以整块收起。
 
+[![npm](https://img.shields.io/npm/v/dsh-session-deck)](https://www.npmjs.com/package/dsh-session-deck)
 ![dsh](https://img.shields.io/badge/dsh-0.1.7--rc.2-blue)
 ![tests](https://img.shields.io/badge/tests-148%20%2B%207-brightgreen)
 ![license](https://img.shields.io/badge/license-MIT-green)
@@ -62,10 +63,10 @@ DSH 的侧边栏是按项目组织的，只用一个项目时没问题，一旦�
 ## 安装
 
 ```bash
-# 从 npm（发布后）
+# 从 npm（也可以在 App 的「添加插件」对话框里直接填包名）
 dsh plugin --profile desktop add dsh-session-deck
 
-# 或直接从本仓库装
+# 或直接从本仓库装（不走 npm）
 dsh plugin --profile desktop add github:Timebro9999/dsh-session-deck
 ```
 

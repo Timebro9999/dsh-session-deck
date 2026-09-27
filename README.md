@@ -6,6 +6,7 @@
 pin projects *and* conversations to one band, switch the sidebar to a "recently used" activity view,
 give every project its own icon, and collapse the sections you are not using.
 
+[![npm](https://img.shields.io/npm/v/dsh-session-deck)](https://www.npmjs.com/package/dsh-session-deck)
 ![dsh](https://img.shields.io/badge/dsh-0.1.7--rc.2-blue)
 ![tests](https://img.shields.io/badge/tests-148%20%2B%207-brightgreen)
 ![license](https://img.shields.io/badge/license-MIT-green)
@@ -67,10 +68,10 @@ collapsible sections.**
 ## Install
 
 ```bash
-# from npm (once published)
+# from npm — also available in the in-app "add plugin" dialog by name
 dsh plugin --profile desktop add dsh-session-deck
 
-# or straight from this repository
+# or straight from this repository (no npm)
 dsh plugin --profile desktop add github:Timebro9999/dsh-session-deck
 ```
 
