@@ -197,6 +197,15 @@ check('picker renders an icon grid', cells.length >= 20, String(cells.length));
 const tabs = descendants(panel).filter((el) => el.className.includes('dsd-tab'));
 check('picker renders category tabs', tabs.length >= 8, String(tabs.length));
 check('picker offers a reset action', Boolean(byClass(panel, 'dsd-picker-foot')));
+check(
+  'the emoji hint never hard-codes a macOS-only shortcut on a non-Mac platform',
+  (() => {
+    const note = byClass(panel, 'dsd-note');
+    if (!note) return false;
+    return note.textContent.indexOf('Control + Command') === -1 && note.textContent.indexOf('表情面板') !== -1;
+  })(),
+  byClass(panel, 'dsd-note') && byClass(panel, 'dsd-note').textContent,
+);
 
 /* 3. choosing an icon ----------------------------------------------------- */
 const folderCell = cells.find((cell) => cell.textContent === '📁');

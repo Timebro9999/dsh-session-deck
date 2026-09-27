@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 — cross-platform copy
+
+- The emoji-panel hint is now platform-aware: macOS (`Control + Command + Space`), Windows (`Win + .`),
+  anything else gets the neutral wording. Nothing else in the plugin was platform-specific — it is a
+  browser-side DOM overlay, so the same build runs in the macOS, Windows and Linux desktop apps.
+- README: an explicit "Platform" line, and a test that fails if a macOS-only shortcut leaks into the
+  copy on a non-Mac platform.
+
 ## 0.1.0 — first public release
 
 Everything below is the initial release: the plugin was developed against DSH `0.1.7-rc.2` in a live profile.

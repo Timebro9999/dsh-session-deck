@@ -83,6 +83,8 @@ this repo under [`marketplace/`](marketplace) — and
 
 ## Requirements
 
+- **Platform: anywhere DSH's web client runs** — the macOS desktop app, Windows and Linux builds alike: the plugin is a browser-side DOM overlay with no native code and no OS-specific API (the only platform-aware bit is the emoji-panel shortcut printed in the icon picker).
+
 - DSH `0.1.7-rc.2` on the desktop profile. The plugin reads the shipped sidebar's DOM and its client
   services, so there is no slot or service contract to depend on — but a future shell redesign can move
   the anchors it uses.
