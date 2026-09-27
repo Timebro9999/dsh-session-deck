@@ -1,0 +1,9 @@
+# dsh-session-deck bundle for DeepSeek Harness (dsh).
+#
+# A bundle patch: when this package is added to a profile's `dsh.profile.bundles`,
+# the composition merges the entry below, and the plugin row resolves this package
+# by name through the profile's node_modules. The node half is inert — every
+# surface is declared by the client half (`lib/client.js`).
+- insert:
+    - id: session-deck
+      name: dsh-session-deck

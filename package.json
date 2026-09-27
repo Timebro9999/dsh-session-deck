@@ -1,0 +1,65 @@
+{
+  "name": "dsh-session-deck",
+  "version": "0.1.0",
+  "description": "Codex-style sidebar for DeepSeek Harness: a pinned band for projects and conversations, collapsible 置顶/项目/组件 sections, a bell activity view of recently used conversations (with the last answer as preview), and per-project emoji icons.",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh-CN.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "sidebar",
+    "session",
+    "pin",
+    "pinned",
+    "activity",
+    "emoji",
+    "codex"
+  ],
+  "license": "MIT",
+  "author": "Timebro9999",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Timebro9999/dsh-session-deck.git"
+  },
+  "homepage": "https://github.com/Timebro9999/dsh-session-deck",
+  "bugs": {
+    "url": "https://github.com/Timebro9999/dsh-session-deck/issues"
+  },
+  "scripts": {
+    "test": "node test/test-deck.cjs && node test/test-locale.cjs"
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "dsh": {
+    "manifestVersion": 1,
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "compatibility": {
+      "dshReleases": {
+        "0.1.7-rc.2": "compatible"
+      },
+      "dsh": "^0.1.7-rc.2"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  }
+}
