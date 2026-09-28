@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.2 — no duplicated sections after a plugin update
+
+Leaving the desktop app open across a plugin update (or any profile change) could leave the sidebar
+"scrambled": the section headers — most visibly 组件 — piled up, one per plugin instance. The shell does
+not unload an old client instance when it reloads a bundle, and every instance paints its own copy of the
+sidebar furniture; a restart used to be the only cure.
+
+Now every pass picks a winner **structurally**: the instance that is scanning keeps its own container and
+hides every other copy of it (the 置顶/项目 band, the activity panel, the 组件 header). Nodes are hidden
+rather than removed, because an owner whose node was removed simply inserts a new one — hiding is what
+actually converges. If a newer instance marks this one stale, this one stands down instead of fighting.
+
 ## 0.2.1 — the pinned area matches the project area, and the data never goes stale
 
 - **Type metric.** The section heads and pinned rows no longer hard-code a font size: they inherit the

@@ -1,6 +1,6 @@
 {
   "name": "dsh-session-deck",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Codex-style sidebar for DeepSeek Harness: a pinned band for projects and conversations, collapsible 置顶/项目/组件 sections, a bell activity view of recently used conversations (with the last answer as preview), and per-project emoji icons.",
   "type": "module",
   "main": "./lib/index.js",

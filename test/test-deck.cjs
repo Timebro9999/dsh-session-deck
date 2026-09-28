@@ -868,6 +868,26 @@ check(
   String(triggersOf(sidebar.header).length),
 );
 check(
+  'only one section container stays visible after a re-mount',
+  (() => {
+    const all = sidebar.list.children.filter((el) => el.className.includes('dsd-sections'));
+    const visible = all.filter((el) => el.style.display !== 'none');
+    return all.length >= 1 && visible.length === 1;
+  })(),
+  sidebar.list.children.filter((el) => el.className.includes('dsd-sections'))
+    .map((el) => String(el.style.display)).join(' | ') || '(none)',
+);
+check(
+  'exactly one 组件 header stays visible in the foot area',
+  (() => {
+    const heads = sidebar.footArea.descendants().filter((el) => el.className.includes('dsd-section-head'));
+    const visible = heads.filter((el) => el.style.display !== 'none');
+    return visible.length === 1 && heads.length >= 1;
+  })(),
+  sidebar.footArea.descendants().filter((el) => el.className.includes('dsd-section-head'))
+    .map((el) => el.className + ':' + String(el.style.display)).join(' | '),
+);
+check(
   'a re-mount reclaims the previous painted icons',
   sidebar.list.descendants().filter((el) => el.className.includes('dsd-project-icon')).length ===
     sidebar.list.descendants().filter((el) => el.className.includes('dsd-project-icon')).length,
