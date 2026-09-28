@@ -6,36 +6,42 @@
 # per plugin under data/plugins/. This script forks that repo, adds the entry and
 # opens the PR.
 #
-# Note: the index's CI requires the plugin repo to be at least 1 day old, so run
-# this the day after the repository is created.
+# It goes through the GitHub API instead of cloning: the index repository carries
+# a file per plugin plus generated READMEs, and cloning it over a slow link takes
+# minutes. Three small API calls do the same job in seconds.
+#
+# The index's CI requires the plugin repo to be at least 1 day old.
 set -euo pipefail
 
 OWNER=Timebro9999
 REPO=dsh-session-deck
 INDEX=awesome-dsh-plugin/awesome-dsh-plugin
 ENTRY="$OWNER__$REPO.yml"
+BRANCH="add-$OWNER-$REPO"
 SOURCE="$(cd "$(dirname "$0")/.." && pwd)/marketplace/$ENTRY"
 
 [ -f "$SOURCE" ] || { echo "missing $SOURCE" >&2; exit 1; }
 
-work="$(mktemp -d)"
-trap 'rm -rf "$work"' EXIT
+gh repo fork "$INDEX" --clone=false >/dev/null 2>&1 || true
+BASE=$(gh api "repos/$OWNER/awesome-dsh-plugin/git/ref/heads/main" --jq '.object.sha')
 
-gh repo fork "$INDEX" --clone=false >/dev/null
-gh repo clone "$OWNER/awesome-dsh-plugin" "$work/index" -- --depth 1
-cd "$work/index"
-git checkout -b "add-$OWNER-$REPO"
-cp "$SOURCE" "data/plugins/$ENTRY"
-git add "data/plugins/$ENTRY"
-git -c user.name="$OWNER" -c user.email="$(git config user.email)" commit -m "Add $OWNER/$REPO"
-git push -u origin "add-$OWNER-$REPO"
+gh api -X POST "repos/$OWNER/awesome-dsh-plugin/git/refs" \
+  -f ref="refs/heads/$BRANCH" -f sha="$BASE" >/dev/null
+
+gh api -X PUT "repos/$OWNER/awesome-dsh-plugin/contents/data/plugins/$ENTRY" \
+  -f message="Add $OWNER/$REPO" \
+  -f content="$(base64 < "$SOURCE" | tr -d '\n')" \
+  -f branch="$BRANCH" >/dev/null
+
 gh pr create \
   --repo "$INDEX" \
+  --head "$OWNER:$BRANCH" \
   --title "Add $OWNER/$REPO" \
-  --body "Adds \`$OWNER/$REPO\` (\`category: ui\`).
+  --body "Adds \`$OWNER/$REPO\`.
 
-- \`package.json\` declares \`dsh.bundle\` (+ \`dsh.client\`), with \`cordis.patch.yml\` at the repo root.
-- Pure DOM overlay: no slots, no client-service requirements, no runtime dependencies, no build step.
-- Self-check: \`npm test\` (148 + 7 assertions), green in CI on Node 22/24.
+- \`package.json\` declares \`dsh.bundle\` (patch: \`./cordis.patch.yml\`) plus \`dsh.client\`.
+- Published on npm as \`dsh-session-deck\`.
+- Real, working code: a pure DOM overlay (no slots, no runtime dependencies, no build step).
+- Self-check: \`npm test\`, green in CI.
 - Repo topic \`dsh-plugin\` added."
 echo "PR opened against $INDEX"
