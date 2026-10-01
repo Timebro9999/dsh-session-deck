@@ -87,7 +87,7 @@ dsh plugin --profile desktop add github:Timebro9999/dsh-session-deck#v0.1.1
 
 - **平台：能跑 DSH Web 客户端的地方都行** —— macOS 桌面端、Windows 与 Linux 版都一样：插件是纯浏览器端的 DOM overlay，没有原生代码、不调用任何系统 API（唯一和平台有关的是图标选择器里提示的表情面板快捷键）。
 
-- 桌面 profile 上的 DSH `0.1.7-rc.2`。插件直接读内置侧边栏的 DOM 与客户端服务，因此不依赖插槽契约，
+- 桌面 profile 上的 DSH `0.2.0-rc.1`（或 `0.1.7-rc.2`）。插件直接读内置侧边栏的 DOM 与客户端服务，因此不依赖插槽契约，
   但界面大改时它用的锚点可能需要跟着调。
 - 运行时零依赖，也**没有构建步骤**：[`lib/client.js`](lib/client.js) 就是手写源码，原样发布。
 - 界面文案跟随 DSH 自己的语言（先读语言服务，再读界面实际渲染的文案，最后才是浏览器），

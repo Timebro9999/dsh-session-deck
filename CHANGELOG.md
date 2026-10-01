@@ -2,6 +2,9 @@
 
 ## 0.2.2 — no duplicated sections after a plugin update
 
+- Compatibility metadata now names DSH `0.2.0-rc.1` (the release the desktop app auto-updated to) as well as
+  `0.1.7-rc.2`; the plugin itself was verified running on `0.2.0-rc.1`.
+
 Leaving the desktop app open across a plugin update (or any profile change) could leave the sidebar
 "scrambled": the section headers — most visibly 组件 — piled up, one per plugin instance. The shell does
 not unload an old client instance when it reloads a bundle, and every instance paints its own copy of the

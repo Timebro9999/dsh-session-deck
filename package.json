@@ -53,9 +53,10 @@
     },
     "compatibility": {
       "dshReleases": {
+        "0.2.0-rc.1": "compatible",
         "0.1.7-rc.2": "compatible"
       },
-      "dsh": "^0.1.7-rc.2"
+      "dsh": "^0.1.7-rc.2 || ^0.2.0-rc.1"
     },
     "client": {
       "platform": "web",
