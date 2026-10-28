@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.3 — one owner, decided by the newest instance
+
+Every instance used to keep its own container and hide the siblings it saw, which meant two instances
+created from the same bundle load could hide each other — the section headers then vanished altogether
+(`heads0of6` on the live probe). Ownership is now a **shared, strictly increasing id** written on
+`<html>` (`data-dsh-session-deck-seq`): the highest id wins, every instance computes the same winner, and
+a losing instance stands down (and resumes if the winner goes away). Exactly one 置顶/项目/组件 header, one
+pinned band and one activity panel stay on screen, and the visible copy is always the newest code.
+
 ## 0.2.2 — no duplicated sections after a plugin update
 
 - Compatibility metadata now names DSH `0.2.0-rc.1` (the release the desktop app auto-updated to) as well as
