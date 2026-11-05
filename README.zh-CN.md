@@ -11,6 +11,14 @@
 ![tests](https://img.shields.io/badge/tests-148%20%2B%207-brightgreen)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
+## 效果图
+
+| 侧边栏 —— 置顶区、项目分区、组件分区 | 活动视图 —— 小铃铛 |
+| --- | --- |
+| ![带置顶区、项目分区与收起的组件分区的侧边栏](https://raw.githubusercontent.com/Timebro9999/dsh-session-deck/main/docs/screenshot-sidebar.png) | ![活动视图：最近使用的对话，带回答预览](https://raw.githubusercontent.com/Timebro9999/dsh-session-deck/main/docs/screenshot-activity.png) |
+
+*（用插件自己的样式表 + 应用真实主题变量渲染，数据为示例数据 —— 图里没有你的真实会话名或路径。）*
+
 ## 为什么做这个
 
 DSH 的侧边栏是按项目组织的，只用一个项目时没问题，一旦同时做几件事就难受：
@@ -83,15 +91,22 @@ dsh plugin --profile desktop add github:Timebro9999/dsh-session-deck#v0.1.1
 投稿只加一个文件：`data/plugins/Timebro9999__dsh-session-deck.yml`，本仓库放在 [`marketplace/`](marketplace)，
 提 PR 用 [`scripts/open-marketplace-pr.sh`](scripts/open-marketplace-pr.sh)。
 
-## 依赖与适配
+## 宿主要求
 
-- **平台：能跑 DSH Web 客户端的地方都行** —— macOS 桌面端、Windows 与 Linux 版都一样：插件是纯浏览器端的 DOM overlay，没有原生代码、不调用任何系统 API（唯一和平台有关的是图标选择器里提示的表情面板快捷键）。
+| | |
+| --- | --- |
+| **DSH 宿主** | `0.2.0-rc.1`（实测通过）或 `0.1.7-rc.2`；同一份 bundle 在桌面端与 Web 客户端都能跑 |
+| **Profile** | 任意 profile —— 示例里用的是 `desktop` |
+| **宿主 Node** | `^22.19.0` 或 `>=24`（即 DSH 自带的版本，插件不再额外要求） |
+| **运行时依赖** | 无 —— `lib/client.js` 是直接操作 DOM 的 CommonJS，原样加载，**没有构建步骤** |
+| **客户端服务** | 不强制（`inject: []`）。`sessions` / `workspaces` / `uiWorkspace` / `locale` 存在时就用，缺了也能画，只是数据少一些 |
+| **浏览器 API** | `localStorage`、`MutationObserver`、`requestAnimationFrame`、`Intl.Segmenter` |
+| **平台** | macOS / Windows / Linux —— 纯浏览器端，无原生代码 |
+| **网络** | 运行时零联网（无遥测、无远端调用） |
+| **绑定什么** | 内置侧边栏的 DOM：`[data-row-key^="workspace:"]` / `[data-row-key^="session:"]` 行、分区标题、列表滚动容器、侧边栏底部。外壳改版可能移动这些锚点 —— 这是升级唯一可能弄坏的地方 |
+| **存储** | 只用浏览器 `localStorage`（`dsh-session-deck:v1`、`dsh-session-deck:previews:v3`） |
 
-- 桌面 profile 上的 DSH `0.2.0-rc.1`（或 `0.1.7-rc.2`）。插件直接读内置侧边栏的 DOM 与客户端服务，因此不依赖插槽契约，
-  但界面大改时它用的锚点可能需要跟着调。
-- 运行时零依赖，也**没有构建步骤**：[`lib/client.js`](lib/client.js) 就是手写源码，原样发布。
-- 界面文案跟随 DSH 自己的语言（先读语言服务，再读界面实际渲染的文案，最后才是浏览器），
-  所以它和 App 其余部分一样是中文或英文。
+界面文案跟随 DSH 自己的语言（先读语言服务，再读界面实际渲染的文案，最后才是浏览器），所以它和 App 其余部分一样是中文或英文。
 
 ## 实现方式
 

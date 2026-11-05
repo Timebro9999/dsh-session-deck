@@ -11,6 +11,15 @@ give every project its own icon, and collapse the sections you are not using.
 ![tests](https://img.shields.io/badge/tests-148%20%2B%207-brightgreen)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
+## Screenshots
+
+| Sidebar — pinned band, 项目 section, 组件 section | Activity view — the bell |
+| --- | --- |
+| ![The sidebar with the pinned band, the 项目 section and the collapsed 组件 section](https://raw.githubusercontent.com/Timebro9999/dsh-session-deck/main/docs/screenshot-sidebar.png) | ![The activity view listing recently used conversations with answer previews](https://raw.githubusercontent.com/Timebro9999/dsh-session-deck/main/docs/screenshot-activity.png) |
+
+*(Rendered from the plugin's own stylesheet on the app's real theme tokens, with sample data — no
+personal titles or paths appear in these images.)*
+
 ## Why
 
 DSH's sidebar is organized per project, and that is fine until you work across several of them:
@@ -89,17 +98,23 @@ Listing in the DSH plugin market comes from the curated index
 this repo under [`marketplace/`](marketplace) — and
 [`scripts/open-marketplace-pr.sh`](scripts/open-marketplace-pr.sh) opens the PR.
 
-## Requirements
+## Host requirements
 
-- **Platform: anywhere DSH's web client runs** — the macOS desktop app, Windows and Linux builds alike: the plugin is a browser-side DOM overlay with no native code and no OS-specific API (the only platform-aware bit is the emoji-panel shortcut printed in the icon picker).
+| | |
+| --- | --- |
+| **DSH host** | `0.2.0-rc.1` (verified live) or `0.1.7-rc.2`; the same bundle runs in the desktop app and in the web client |
+| **Profile** | any profile — the examples use `desktop` |
+| **Host Node** | `^22.19.0` or `>=24` (whatever DSH ships; the plugin needs nothing beyond it) |
+| **Runtime dependencies** | none — `lib/client.js` is plain CommonJS over the DOM, loaded as-is, **no build step** |
+| **Client services** | none required (`inject: []`). `sessions`, `workspaces`, `uiWorkspace` and `locale` are used when they exist; without them the plugin still paints, just with less data |
+| **Browser APIs** | `localStorage`, `MutationObserver`, `requestAnimationFrame`, `Intl.Segmenter` |
+| **Platform** | macOS, Windows, Linux — browser-side only, no native code (the icon picker's hint prints the emoji-panel shortcut for the OS it runs on) |
+| **Network** | none at runtime (no telemetry, no remote calls) |
+| **What it binds to** | the shipped sidebar's DOM: `[data-row-key^="workspace:"]` / `[data-row-key^="session:"]` rows, the section header, the list scroller and the foot area. A future shell redesign can move these anchors — that is the one thing an upgrade can break |
+| **Storage** | browser `localStorage` only (`dsh-session-deck:v1`, `dsh-session-deck:previews:v3`) |
 
-- DSH `0.2.0-rc.1` (or `0.1.7-rc.2`) on the desktop profile. The plugin reads the shipped sidebar's DOM and its client
-  services, so there is no slot or service contract to depend on — but a future shell redesign can move
-  the anchors it uses.
-- No runtime dependencies and **no build step**: [`lib/client.js`](lib/client.js) is hand-written and
-  shipped as-is.
-- The interface follows DSH's own language (the locale service first, then the rendered UI, then the
-  browser), so its copy is Chinese or English like the rest of the app.
+The interface follows DSH's own language (the locale service first, then the rendered UI, then the
+browser), so its copy is Chinese or English like the rest of the app.
 
 ## How it works
 
