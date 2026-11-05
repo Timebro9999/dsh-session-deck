@@ -49,14 +49,14 @@ collapsible sections.**
 ```
 ┌ 工作区                        🔍  ⌘  📁+  🔔   ← the bell opens the activity view
 │ ▾ 置顶                                  3       ← pinned band (conversations + projects)
-│   ▸ 🌈 deepseek调试                     项目
-│     🚀 新出了个GLM5.3 flashx…           会话
+│   ▸ 🎨 设计系统                         项目
+│     📘 把缓存层从内存换成 SQLite         会话
 │     🌈 我没发现现在有什么这个左侧…      会话
 │   ────────────────────────────────────
 │ ▾ 项目                                  9       ← the shipped project list, collapsible
 │   📁 pdf
 │   🚀 前沿方向研究
-│       新出了个GLM5.3 flashx…            1天
+│       首页动效方案                      3天
 └
   ⋯ widgets ⋯
   ▸ 组件                                          ← the bottom widgets, collapsible

@@ -25,7 +25,7 @@ Object.defineProperty(globalThis, 'window', {
 doc.documentElement = { lang: 'en' };
 
 const sidebar = buildSidebar();                 // its section label reads 项目
-const wsRow = buildWorkspaceRow({ key: 'w-debug', title: 'deepseek调试', folderClass: 'folder' });
+const wsRow = buildWorkspaceRow({ key: 'w-debug', title: '示例工作区', folderClass: 'folder' });
 const sessionRow = buildSessionRow('s-alpha', '重构侧边栏会话列表');
 sidebar.addRow(wsRow.row);
 sidebar.addRow(sessionRow.row);
@@ -39,7 +39,7 @@ const listOf = (snapshot) => ({ getSnapshot: () => snapshot, subscribe: () => ()
 const services = {
   uiWorkspace: { openSession() {}, openWorkspace() {} },
   sessions: { list: listOf({ ids: ['s-alpha'], byId: { 's-alpha': { displayTitle: '重构侧边栏会话列表' } } }) },
-  workspaces: { list: listOf({ items: [{ workspaceId: 'w-debug', title: 'deepseek调试', sessionIds: ['s-alpha'] }] }) },
+  workspaces: { list: listOf({ items: [{ workspaceId: 'w-debug', title: '示例工作区', sessionIds: ['s-alpha'] }] }) },
 };
 let localeSnapshot = { active: 'en', locales: [], revision: 1 };
 let localeListeners = [];

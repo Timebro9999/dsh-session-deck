@@ -17,7 +17,7 @@ const { doc, local, fire, buildWorkspaceRow, buildPickerRow, buildSidebar, build
 
 /* --------------------------------------------------------------- surfaces -- */
 const sidebar = buildSidebar();
-const wsRow = buildWorkspaceRow({ key: 'w-debug', title: 'deepseek调试', folderClass: 'folder' });
+const wsRow = buildWorkspaceRow({ key: 'w-debug', title: '示例工作区', folderClass: 'folder' });
 const sessionRow = buildSessionRow('s-alpha', '重构侧边栏会话列表');
 const otherRow = buildWorkspaceRow({ key: 'w-tryon', title: '3d-tryon', folderClass: 'folder' });
 sidebar.addRow(wsRow.row);
@@ -48,7 +48,7 @@ const sessionStore = {
 };
 const workspaceStore = {
   items: [
-    { workspaceId: 'w-debug', title: 'deepseek调试', sessionIds: ['s-alpha', 's-beta'] },
+    { workspaceId: 'w-debug', title: '示例工作区', sessionIds: ['s-alpha', 's-beta'] },
     { workspaceId: 'w-tryon', title: '3d-tryon', sessionIds: [] },
   ],
 };
@@ -201,7 +201,7 @@ fire(wsTrigger, 'click');
 const panel = pickerPanel();
 check('trigger click opens the picker', Boolean(panel));
 check('picker shows its title', byClass(panel, 'dsd-picker-title').textContent === '项目图标');
-check('picker names the project', byClass(panel, 'dsd-picker-sub').textContent === 'deepseek调试');
+check('picker names the project', byClass(panel, 'dsd-picker-sub').textContent === '示例工作区');
 const cells = descendants(panel).filter((el) => el.className.includes('dsd-cell'));
 check('picker renders an icon grid', cells.length >= 20, String(cells.length));
 const tabs = descendants(panel).filter((el) => el.className.includes('dsd-tab'));
@@ -372,7 +372,7 @@ flushFrames();
 const band2 = byClass(doc.body, 'dsd-sections');
 const rows = band2.children.filter((child) => child.className.includes('dsd-pin-row'));
 check('band now holds both pins', rows.length === 2, String(rows.length));
-check('project pin comes first', byClass(rows[0], 'dsd-pin-title').textContent === 'deepseek调试');
+check('project pin comes first', byClass(rows[0], 'dsd-pin-title').textContent === '示例工作区');
 check('project pin shows the project icon', byClass(rows[0], 'dsd-pin-icon').textContent === '📁');
 check(
   'a pinned project never shows the running ring',
@@ -667,7 +667,7 @@ check(
   'rows name the project on the title line',
   activityRows.every((row) => {
     const source = byClass(row, 'dsd-activity-source');
-    return source && source.textContent === 'deepseek调试';
+    return source && source.textContent === '示例工作区';
   }),
   activityRows.map((row) => (byClass(row, 'dsd-activity-source') || {}).textContent).join('|'),
 );
