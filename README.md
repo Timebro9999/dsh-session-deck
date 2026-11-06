@@ -42,7 +42,7 @@ collapsible sections.**
 | **Activity view** (`🔔`) | The last icon of the workspace row switches the sidebar to **recently used**: day groups (today / yesterday / weekday / date), two lines per conversation (title + project, then **the beginning of the last answer**), a running indicator, and click-through that keeps the view open so you can walk through several threads in a row. |
 | **Project icons** | Replace a project's folder icon with any emoji — on the sidebar's project rows *and* in the directory picker. A Codex-style picker: recently used, category tabs, an icon grid, and reset. |
 | **One state everywhere** | Rename a conversation, finish a turn or change a project icon and every view follows: the pinned band and the activity view resolve each row against the live stores, and a working conversation shows the shell's own running ring. |
-| **Collapsible sections** | `置顶`, `项目` (the shipped project list) and `组件` (the sidebar's bottom widgets) each collapse from their own header and remember their state. |
+| **Collapsible sections** | `插件` (the panel nav rows), `置顶`, `项目` (the shipped project list) and `组件` (the sidebar's bottom widgets) each collapse from their own header and remember their state. |
 
 ## Sidebar anatomy
 

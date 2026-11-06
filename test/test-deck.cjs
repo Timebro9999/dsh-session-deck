@@ -145,6 +145,12 @@ process.on('uncaughtException', (error) => {
   console.error('\nharness aborted:', error && error.message);
   process.exit(1);
 });
+/* The 置顶 header specifically — the 插件 nav header now sits above it. */
+const sectionsHeadOf = () => byClass(doc.body, 'dsd-sections') &&
+  byClass(doc.body, 'dsd-sections').children.filter(
+    (child) => child.className.includes('dsd-section-head'),
+  )[0];
+
 function check(name, condition, extra) {
   checks.push({ name, ok: Boolean(condition), extra });
 }
@@ -796,6 +802,51 @@ check(
   sidebar.list.className,
 );
 
+/* 13d. the 插件 section collapses the plugin nav rows -------------------- */
+const panelHead = byClass(sidebar.panelList, 'dsd-section-head') ||
+  (sidebar.root.children.filter(
+    (child) => child.className.includes('dsd-section-head') &&
+      byClass(child, 'dsd-section-label') &&
+      byClass(child, 'dsd-section-label').textContent === '插件',
+  )[0]);
+check('a 插件 section head sits above the plugin nav rows', Boolean(panelHead), sidebar.root.children.map((c) => c.className).join('|'));
+check(
+  'it is labelled 插件 and starts open',
+  byClass(panelHead, 'dsd-section-label').textContent === '插件' &&
+    panelHead.getAttribute('aria-expanded') === 'true',
+  byClass(panelHead, 'dsd-section-label').textContent,
+);
+check(
+  'the nav rows are visible to start with',
+  sidebar.panelList.style.display === '',
+  String(sidebar.panelList.style.display),
+);
+fire(panelHead, 'click');
+flushFrames();
+check(
+  'clicking it hides the whole nav block',
+  sidebar.panelList.style.display === 'none',
+  String(sidebar.panelList.style.display),
+);
+check(
+  'the nav rows themselves are untouched (hidden, not removed)',
+  sidebar.panelList.children.length === 6,
+  String(sidebar.panelList.children.length),
+);
+check(
+  'the collapsed nav is remembered',
+  /"navCollapsed":true/.test(local.getItem('dsh-session-deck:v1') || ''),
+  String(local.getItem('dsh-session-deck:v1')).slice(-140),
+);
+const plugHead = () => sidebar.root.children.filter(
+  (c) => c.className.includes('dsd-section-head') &&
+    byClass(c, 'dsd-section-label') &&
+    byClass(c, 'dsd-section-label').textContent === '插件',
+)[0];
+fire(plugHead(), 'click');
+flushFrames();
+check('clicking again shows the nav block', sidebar.panelList.style.display === '');
+
 /* 13c. the 组件 section collapses the bottom widgets --------------------- */
 const widgetHead = byClass(sidebar.footArea, 'dsd-section-head');
 check('a 组件 section head lands in the sidebar foot', Boolean(widgetHead), sidebar.footArea.className);
@@ -831,8 +882,8 @@ check('clicking again shows the widgets', sidebar.footerActions.style.display ==
 // The band is zh because the harness locale says so, not because of the browser.
 check(
   'band copy follows the harness locale',
-  byClass(byClass(doc.body, 'dsd-section-head'), 'dsd-section-label').textContent === '置顶',
-  byClass(doc.body, 'dsd-section-head').textContentDeep,
+  byClass(sectionsHeadOf(), 'dsd-section-label').textContent === '置顶',
+  sectionsHeadOf() && sectionsHeadOf().textContentDeep,
 );
 
 // (the mount the activity checks above ran against)
@@ -850,7 +901,7 @@ check(
 
 localeSnapshot.active = 'en';
 const disposeEnglish = plugin.apply(ctx);
-const englishHead = byClass(doc.body, 'dsd-section-head');
+const englishHead = sectionsHeadOf();
 check(
   'an English harness locale switches the copy',
   englishHead && byClass(englishHead, 'dsd-section-label').textContent === 'Pinned',

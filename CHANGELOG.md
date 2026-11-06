@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.4 — the plugin nav rows collapse too
+
+The rows above 工作区 (插件 / 自媒体工作台 / 歸藏设计 … — one per installed panel) now get their own
+collapsible **插件** header, the fourth section next to 置顶 / 项目 / 组件. Clicking it hides the whole nav
+block (the rows stay in the DOM, only the container is hidden), the state is remembered, and in rail mode
+the header stays out of the way.
+
 ## 0.2.3 — one owner, decided by the newest instance
 
 Every instance used to keep its own container and hide the siblings it saw, which meant two instances

@@ -255,6 +255,21 @@ function buildSidebar() {
   }
   header.appendChild(headerActions);
   root.appendChild(header);
+  const panelList = new FakeElement('div');
+  panelList.className = 'Hash_panelList';
+  for (const title of ['插件', '自媒体工作台', '歸藏设计', '自动化任务', '技能中心', '更多']) {
+    const row = new FakeElement('button');
+    row.className = 'Hash_panelRow';
+    const glyph = new FakeElement('span');
+    glyph.className = 'Hash_panelGlyph';
+    const text = new FakeElement('span');
+    text.className = 'Hash_panelTitle';
+    text.textContent = title;
+    row.appendChild(glyph);
+    row.appendChild(text);
+    panelList.appendChild(row);
+  }
+  root.appendChild(panelList);
   const listArea = new FakeElement('div');
   listArea.className = 'Hash_listArea';
   const treeBody = new FakeElement('div');
@@ -282,6 +297,7 @@ function buildSidebar() {
   doc.body.appendChild(root);
   return {
     root,
+    panelList,
     footArea,
     footerActions,
     settingsArea,
