@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.5 — the 插件 header no longer disturbs the sidebar
+
+0.2.4 inserted the header as a **sibling of the plugin nav**, inside the React-rendered scroll area. React
+reconciles that area by its own children, so the foreign node drifted onto the 工作区 row and the toggle
+stopped responding.
+
+The header now lives **inside the nav** — the same place the bell lives inside the header row — and the nav
+collapses through a class on itself (`dsd-nav-collapsed`), so nothing is moved and React keeps finding its
+own children where it left them. Leftover sibling nodes from 0.2.4 are swept up on the next scan.
+
 ## 0.2.4 — the plugin nav rows collapse too
 
 The rows above 工作区 (插件 / 自媒体工作台 / 歸藏设计 … — one per installed panel) now get their own

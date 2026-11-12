@@ -803,49 +803,33 @@ check(
 );
 
 /* 13d. the 插件 section collapses the plugin nav rows -------------------- */
-const panelHead = byClass(sidebar.panelList, 'dsd-section-head') ||
-  (sidebar.root.children.filter(
-    (child) => child.className.includes('dsd-section-head') &&
-      byClass(child, 'dsd-section-label') &&
-      byClass(child, 'dsd-section-label').textContent === '插件',
-  )[0]);
-check('a 插件 section head sits above the plugin nav rows', Boolean(panelHead), sidebar.root.children.map((c) => c.className).join('|'));
+const navHeadIn = (list) => list.children.filter(
+  (child) => child.className.includes('dsd-nav-head'),
+)[0];
+check('the 插件 header lives INSIDE the nav (never a sibling React reconciles around)', Boolean(navHeadIn(sidebar.panelList)), sidebar.panelList.children.map((c) => c.className).join('|'));
 check(
   'it is labelled 插件 and starts open',
-  byClass(panelHead, 'dsd-section-label').textContent === '插件' &&
-    panelHead.getAttribute('aria-expanded') === 'true',
-  byClass(panelHead, 'dsd-section-label').textContent,
+  byClass(navHeadIn(sidebar.panelList), 'dsd-section-label').textContent === '插件' &&
+    navHeadIn(sidebar.panelList).getAttribute('aria-expanded') === 'true',
+  byClass(navHeadIn(sidebar.panelList), 'dsd-section-label').textContent,
 );
-check(
-  'the nav rows are visible to start with',
-  sidebar.panelList.style.display === '',
-  String(sidebar.panelList.style.display),
-);
-fire(panelHead, 'click');
+check('the nav is not collapsed to start with', !sidebar.panelList.className.includes('dsd-nav-collapsed'), sidebar.panelList.className);
+fire(navHeadIn(sidebar.panelList), 'click');
 flushFrames();
 check(
-  'clicking it hides the whole nav block',
-  sidebar.panelList.style.display === 'none',
-  String(sidebar.panelList.style.display),
-);
-check(
-  'the nav rows themselves are untouched (hidden, not removed)',
-  sidebar.panelList.children.length === 6,
-  String(sidebar.panelList.children.length),
+  'clicking it collapses the nav by class, leaving the rows in place',
+  sidebar.panelList.className.includes('dsd-nav-collapsed') &&
+    sidebar.panelList.children.length === 7,
+  sidebar.panelList.className + ' | rows=' + sidebar.panelList.children.length,
 );
 check(
   'the collapsed nav is remembered',
   /"navCollapsed":true/.test(local.getItem('dsh-session-deck:v1') || ''),
   String(local.getItem('dsh-session-deck:v1')).slice(-140),
 );
-const plugHead = () => sidebar.root.children.filter(
-  (c) => c.className.includes('dsd-section-head') &&
-    byClass(c, 'dsd-section-label') &&
-    byClass(c, 'dsd-section-label').textContent === '插件',
-)[0];
-fire(plugHead(), 'click');
+fire(navHeadIn(sidebar.panelList), 'click');
 flushFrames();
-check('clicking again shows the nav block', sidebar.panelList.style.display === '');
+check('clicking again expands the nav', !sidebar.panelList.className.includes('dsd-nav-collapsed'), sidebar.panelList.className);
 
 /* 13c. the 组件 section collapses the bottom widgets --------------------- */
 const widgetHead = byClass(sidebar.footArea, 'dsd-section-head');
